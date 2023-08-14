@@ -1,0 +1,133 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'generateTitleForPost',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'generateTitleForPost',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'generateSummarizeOfContent',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'generateSummarizeOfContent',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'translatePost',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'translatePost',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'getSimilarPosts',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'getSimilarPosts',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'generatePostsEmbeddings',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'generatePostsEmbeddings',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'generatePostEmbeddingsAfterEdit',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'generatePostEmbeddingsAfterEdit',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'getSearchQuery',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'getSearchQuery',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'deleteEmbedding',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'deleteEmbedding',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'editEmbedding',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'editEmbedding',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'generateAvatar',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'Avatar',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'scrappingURL',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'scrappingURL',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions', 'deploy', 'generateMetadata',
+      '--trigger-http',
+      '--runtime', 'nodejs18',
+      '--entry-point', 'generateMetadata',
+      '--region', 'us-central1',
+      '--env-vars-file', 'env.yaml',
+      '--timeout', '540',
+      '--allow-unauthenticated'
+    ]

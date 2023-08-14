@@ -1,0 +1,87 @@
+name: Deploy Google Cloud Functions
+on:
+  push:
+    branches:
+    - staging
+
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    strategy:
+      matrix:
+        cloud_function_name: [translatePost, deleteEmbedding, editEmbedding, generateAvatar, generateMetadata, generatePostEmbeddingsAfterEdit, generatePostsEmbeddings, generateSummarizeOfContent, generateTitleForPost, getSearchQuery, getSimilarPosts, scrappingURL, setScrappingURL, scrappingAutoInteraction]
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Detect package manager
+      id: detect-package-manager
+      run: |
+        if [ -f "${{ github.workspace }}/yarn.lock" ]; then
+          echo "::set-output name=manager::yarn"
+          echo "::set-output name=command::install"
+          echo "::set-output name=runner::yarn"
+          exit 0
+        elif [ -f "${{ github.workspace }}/package.json" ]; then
+          echo "::set-output name=manager::npm"
+          echo "::set-output name=command::ci"
+          echo "::set-output name=runner::npx --no-install"
+          exit 0
+        else
+          echo "Unable to determine packager manager"
+          exit 1
+        fi
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+
+    - name: Add ENVs
+      run: |
+        echo '${{ secrets.STAGING_ENV }}' > ./.env
+
+    - id: "auth"
+      name: "Authenticate with GCP"
+      uses: "google-github-actions/auth@v0"
+      with:
+        credentials_json: "${{ secrets.GCP_SA_STAGING_KEY }}"
+
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v37
+
+    - name: Check if specific function or its dependendent file has changed
+      id: check-changes
+      run: |
+        functions_changed=false
+        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          if [[ $file == "src/${{ matrix.cloud_function_name }}.ts" || $file == "src/lib/openAIConfig.ts" || $file == "src/lib/pineConeConfig.ts" ]]; then
+            functions_changed=true
+            break
+          fi
+        done
+
+        if [[ $functions_changed == "true" ]]; then
+          echo "deploy=true" >>$GITHUB_OUTPUT
+        else
+          echo "deploy=false" >>$GITHUB_OUTPUT
+        fi
+
+    - id: "deploy"
+      name: "Deploy Cloud Functions"
+      if: ${{ steps.check-changes.outputs.deploy == 'true' }}
+      uses: "google-github-actions/deploy-cloud-functions@v1"
+      with:
+        name: ${{ matrix.cloud_function_name }}
+        runtime: "nodejs18"
+        entry_point: ${{ matrix.cloud_function_name }}
+
+    - name: "Check Deployment"
+      run: 'curl "${{ steps.deploy.outputs.url }}"'

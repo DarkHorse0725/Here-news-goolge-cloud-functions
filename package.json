@@ -1,0 +1,50 @@
+{
+  "name": "cloudfunction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ts-built/index.js",
+  "scripts": {
+    "gcp-build": "npm run build",
+    "build": "tsc",
+    "build:watch": "tsc -w",
+    "generateSummarizeOfContent": "npm run build && npx @google-cloud/functions-framework --target=generateSummarizeOfContent",
+    "generateTitleForPost": "npm run build && npx @google-cloud/functions-framework --target=generateTitleForPost",
+    "translatePost": "npm run build && npx @google-cloud/functions-framework --target=translatePost",
+    "getSimilarPosts": "npm run build && npx @google-cloud/functions-framework --target=getSimilarPosts",
+    "generatePostsEmbeddings": "npm run build && npx @google-cloud/functions-framework --target=generatePostsEmbeddings",
+    "generatePostEmbeddingsAfterEdit": "npm run build && npx @google-cloud/functions-framework --target=generatePostEmbeddingsAfterEdit",
+    "getSearchQuery": "npm run build && npx @google-cloud/functions-framework --target=getSearchQuery",
+    "deleteEmbedding": "npm run build && npx @google-cloud/functions-framework --target=deleteEmbedding",
+    "editEmbedding": "npm run build && npx @google-cloud/functions-framework --target=editEmbedding",
+    "generateAvatar": "npm run build && npx @google-cloud/functions-framework --target=generateAvatar",
+    "scrappingURL": "concurrently \"npm run build:watch\" \"nodemon --exec npx @google-cloud/functions-framework --target=scrappingURL\"",
+    "setScrappingDomain": "concurrently \"npm run build:watch\" \"nodemon --exec npx @google-cloud/functions-framework --target=setScrappingDomain\"",
+    "getScrappingDomains": "concurrently \"npm run build:watch\" \"nodemon --exec npx @google-cloud/functions-framework --target=getScrappingDomains\"",
+    "generateMetadata": "npm run build && npx @google-cloud/functions-framework --target=generateMetadata"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^3.2.0",
+    "@types/cors": "^2.8.13",
+    "@types/html-to-text": "^9.0.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@dqbd/tiktoken": "^1.0.7",
+    "@pinecone-database/pinecone": "^0.0.14",
+    "@types/puppeteer": "^7.0.4",
+    "concurrently": "^8.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "got-scraping": "^3.2.13",
+    "html-to-text": "^9.0.5",
+    "mongoose": "^7.1.0",
+    "nodemon": "^3.0.1",
+    "openai": "^3.2.1",
+    "puppeteer": "^20.9.0",
+    "puppeteer-core": "^20.9.0",
+    "scrape-it": "^6.0.1"
+  }
+}
